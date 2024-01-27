@@ -18,7 +18,12 @@
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<svelte:element this={element} class="button buton-{variant} {className}" on:click {...$$restProps}>
+<svelte:element
+	this={element}
+	class="button button-{variant} {className}"
+	on:click
+	{...$$restProps}
+>
 	<slot /></svelte:element
 >
 
