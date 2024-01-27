@@ -4,7 +4,7 @@
 	import type { LayoutData } from './$types';
 
 	export let data: LayoutData;
+	$: user = data?.user;
 </script>
 
-{data.user?.display_name} -> {data.user?.email}
 <slot />
