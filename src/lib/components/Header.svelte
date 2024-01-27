@@ -1,8 +1,9 @@
 <script lang="ts">
+	import { tippy } from '$actions';
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
-	import { Navigation } from '$components';
-	import { ChevronDown } from 'lucide-svelte';
+	import { LogoutButton, Navigation } from '$components';
+	import { ChevronDown, ExternalLink } from 'lucide-svelte';
 
 	$: user = $page.data.user;
 </script>
@@ -15,13 +16,42 @@
 	</div>
 	<div class="right">
 		<div id="profile-button">
-			<button class="profile-button">
+			<button
+				class="profile-button"
+				use:tippy={{
+					content: document.getElementById('profile-menu') || undefined,
+					onMount: () => {
+						const template = document.getElementById('profile-menu');
+						if (template) {
+							template.style.display = 'block';
+						}
+					},
+					trigger: 'click',
+					placement: 'bottom-end',
+					interactive: true,
+					theme: 'menu'
+				}}
+			>
 				{#if user?.images && user.images.length > 0}
 					<img src={user.images[0].url} alt="user-profile" />
 				{/if}
 				{user?.display_name} <span class="visually-hidden">Profile Menu</span>
 				<ChevronDown class="profile-arrow" size={22} />
 			</button>
+		</div>
+		<div id="profile-menu" style="display: none;">
+			<div class="profile-menu-content">
+				<ul>
+					<li>
+						<a href={user?.external_urls.spotify} target="_blank" rel="noopener noreferrer"
+							>View on Spotify
+							<ExternalLink focusable="false" aria-hidden size={20} />
+						</a>
+					</li>
+					<li><a href="/profile">View Profile</a></li>
+					<li><LogoutButton /></li>
+				</ul>
+			</div>
 		</div>
 	</div>
 </div>
@@ -53,6 +83,36 @@
 		}
 		&:hover {
 			background-color: var(--accent-color);
+		}
+	}
+	.profile-menu-content {
+		padding: 5px 0;
+		ul {
+			padding: 0;
+			margin: 0;
+			list-style: none;
+			li {
+				&:hover {
+					background-image: linear-gradient(rgba(255, 255, 255, 0.07) 0 0);
+				}
+				a :global(svg) {
+					vertical-align: middle;
+					margin-left: 10px;
+				}
+				a,
+				:global(button) {
+					display: inline-block;
+					padding: 10px 15px;
+					background: none;
+					border: none;
+					text-decoration: none;
+					cursor: pointer;
+					color: var(--menu-text-color);
+					width: 100%;
+					text-align: left;
+					font-size: functions.toRem(14);
+				}
+			}
 		}
 	}
 </style>
