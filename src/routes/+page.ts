@@ -1,51 +1,42 @@
-import { fetchRefresh } from '$helpers';
 import type { PageLoad } from './$types';
+import { fetchRefresh } from '$helpers';
 
 export const load: PageLoad = async ({ fetch: _fetch, parent }) => {
 	const fetch = (path: string) => fetchRefresh(_fetch, path);
 	const { user } = await parent();
-	const new_releases = fetch('/api/spotify/browse/new-releases?limit=6');
-	const featured_playlists = fetch('/api/spotify/browse/featured-playlists?limit=6');
-	const user_playlists = fetch(`/api/spotify/user/${user?.id}/playlists?limit=6`);
+	const newReleases = fetch('/api/spotify/browse/new-releases?limit=6');
+	const featuredPlaylists = fetch('/api/spotify/browse/featured-playlists?limit=6');
+	const userPlaylists = fetch(`/api/spotify/users/${user?.id}/playlists?limit=6`);
 
-	const categoriesResponse = await fetch('/api/spotify/browse/categories');
+	const categoriesResponse = await fetch(`api/spotify/browse/categories`);
 	const categoriesResponseJSON: SpotifyApi.MultipleCategoriesResponse | undefined =
 		categoriesResponse.ok ? await categoriesResponse.json() : undefined;
 
-	const randomCategories = categoriesResponseJSON
-		? categoriesResponseJSON.categories.items.sort(() => 0.5 - Math.random()).slice(0.3)
+	const randomCats = categoriesResponseJSON
+		? categoriesResponseJSON.categories.items.sort(() => 0.5 - Math.random()).slice(0, 3)
 		: [];
 
-	const randomCategoriesPromises = randomCategories.map((categories) =>
-		fetch(`/api/spotify/browse/categories/${categories.id}/playlists?limit=6`)
+	const randomCatsPromises = randomCats.map((cat) =>
+		fetch(`/api/spotify/browse/categories/${cat.id}/playlists?limit=6`)
 	);
 
-	const [
-		newReleasesResponse,
-		featuredPlaylistsResponse,
-		userPlaylistsResponse,
-		...randomCategoriesResponse
-	] = await Promise.all([
-		new_releases,
-		featured_playlists,
-		user_playlists,
-		...randomCategoriesPromises
-	]);
+	const [newReleasesRes, featuredPlaylistsRes, userPlaylistsRes, ...randomCatsRes] =
+		await Promise.all([newReleases, featuredPlaylists, userPlaylists, ...randomCatsPromises]);
 
 	return {
-		newReleases: newReleasesResponse.ok
-			? (newReleasesResponse.json() as Promise<SpotifyApi.ListOfNewReleasesResponse>)
+		newReleases: newReleasesRes.ok
+			? ((await newReleasesRes.json()) as SpotifyApi.ListOfNewReleasesResponse)
 			: undefined,
-		featuredPlaylists: featuredPlaylistsResponse.ok
-			? (featuredPlaylistsResponse.json() as Promise<SpotifyApi.ListOfFeaturedPlaylistsResponse>)
+		featuredPlaylists: featuredPlaylistsRes.ok
+			? ((await featuredPlaylistsRes.json()) as SpotifyApi.ListOfFeaturedPlaylistsResponse)
 			: undefined,
-		userPlaylists: userPlaylistsResponse.ok
-			? (userPlaylistsResponse.json() as Promise<SpotifyApi.ListOfUsersPlaylistsResponse>)
+		userPlaylists: userPlaylistsRes.ok
+			? ((await userPlaylistsRes.json()) as SpotifyApi.ListOfUsersPlaylistsResponse)
 			: undefined,
-		homeCategories: randomCategories,
-		categoriesPlaylists: Promise.all(
-			randomCategoriesResponse.map((response) =>
-				response.ok ? (response.json() as Promise<SpotifyApi.CategoryPlaylistsResponse>) : undefined
+		homeCategories: randomCats,
+		categoriesPlaylists: await Promise.all(
+			randomCatsRes.map((res) =>
+				res.ok ? (res.json() as Promise<SpotifyApi.CategoryPlaylistsResponse>) : undefined
 			)
 		)
 	};

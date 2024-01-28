@@ -1,4 +1,5 @@
 @use 'functions';
+@use '@unsass/breakpoint';
 @import "@fontsource/metropolis";
 @import "@fontsource/metropolis/300";
 @import "@fontsource/metropolis/500";
@@ -111,4 +112,32 @@ a {
 
 #nprogress .bar {
 	background: var(--accent-color) !important;
+}
+
+.grid-items {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 20px;
+	.card{
+		height: 100%;
+	}
+	@include breakpoint.up('sm') {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+	@include breakpoint.up('md') {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+	@include breakpoint.up('xl') {
+		grid-template-columns: repeat(6, minmax(0, 1fr));
+	}
+}
+
+// This is we are doing to hide the text after certain line
+@for $i from 1 through 3 {
+	.truncate-#{$i} {
+		display: -webkit-box;
+		-webkit-line-clamp: $i;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
 }
