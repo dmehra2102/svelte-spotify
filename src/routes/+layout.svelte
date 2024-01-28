@@ -68,6 +68,11 @@
 <style lang="scss">
 	#main {
 		display: flex;
+		:global(html.no-js) & {
+			@include breakpoint.down('md') {
+				display: block;
+			}
+		}
 		#content {
 			flex: 1;
 			#topbar {
@@ -78,6 +83,16 @@
 				align-items: center;
 				width: 100%;
 				z-index: 100;
+				:global(html.no-js) & {
+					position: sticky;
+					top: 0;
+					background-color: var(--header-color);
+					height: auto;
+					padding: 10px 20px;
+					@include breakpoint.up('md') {
+						position: fixed;
+					}
+				}
 				.topbar-bg {
 					position: absolute;
 					width: 100%;
@@ -98,6 +113,11 @@
 				}
 				&.logged-in {
 					padding-top: calc(30px + var(--header-height));
+					:global(html.no-js) & {
+						@include breakpoint.down('md') {
+							padding-top: 30px;
+						}
+					}
 				}
 			}
 		}
