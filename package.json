@@ -17,7 +17,7 @@
 	"devDependencies": {
 		"@playwright/test": "^1.28.1",
 		"@sveltejs/adapter-auto": "^3.0.0",
-		"@sveltejs/kit": "^1.0.0",
+		"@sveltejs/kit": "^2.5.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@types/eslint": "8.56.0",
 		"@types/node": "^20.11.5",
@@ -47,6 +47,7 @@
 		"modern-normalize": "^2.0.0",
 		"nprogress": "^0.2.0",
 		"pkce-gen": "^1.1.0",
+		"sharp": "^0.33.2",
 		"tippy.js": "^6.3.7"
 	}
 }
