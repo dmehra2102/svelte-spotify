@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation';
+	import { Button } from '$components';
 </script>
 
 <form
@@ -18,5 +19,5 @@
 		}
 	}}
 >
-	<button>LOGOUT</button>
+	<Button element="button" type="submit">LOGOUT</Button>
 </form>
