@@ -1,38 +1,6 @@
-# create-svelte
-
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+<h2>Landing Page</h2>
+<img width="1792" alt="Screenshot 2024-08-27 at 11 11 52 PM" src="https://github.com/user-attachments/assets/f9fb13a2-a1a4-4871-ac99-ac73c53d0e41">
+<h2>Homepage</h2>
+<img width="1792" alt="Screenshot 2024-08-27 at 11 10 48 PM" src="https://github.com/user-attachments/assets/5cc3e723-468d-4cdf-bd82-fb68ffc8d37b">
+<h2>Detail Page</h2>
+<img width="1792" alt="Screenshot 2024-08-27 at 11 11 20 PM" src="https://github.com/user-attachments/assets/d45a0f64-1203-44f1-918b-0f2cb3cd59e7">
